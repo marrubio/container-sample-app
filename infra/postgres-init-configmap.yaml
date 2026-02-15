@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-sql
+  labels:
+    app: postgres
+data:
+  init-users.sql: |
+    -- Crear usuario administrador
+    -- CREATE USER adminuser WITH PASSWORD '*******';
+    -- ALTER USER adminuser WITH SUPERUSER;
+    -- GRANT ALL PRIVILEGES ON DATABASE testdb TO adminuser;
+    -- Crear usuario keycloak
+    CREATE USER keycloakusr WITH PASSWORD 'changeit';
+     -- Crear esquema keycloak en la base de datos keycloakdb
+    CREATE SCHEMA keycloak AUTHORIZATION keycloakusr;
+    -- Crear usuario backend
+    CREATE USER appusr WITH PASSWORD 'changeit';
+     -- Crear esquema keycloak en la base de datos keycloakdb
+    CREATE SCHEMA app AUTHORIZATION appusr;
+
