@@ -3,9 +3,9 @@ import { ReactKeycloakProvider } from '@react-keycloak/web';
 import Keycloak from 'keycloak-js';
 
 const keycloak = new Keycloak({
-  url: 'http://keycloak/',
+  url: 'https://keycloak-mario-rubio-dev.apps.rm1.0a51.p1.openshiftapps.com/',
   realm: 'testapp',
-  clientId: 'testappclient', // Cambia por el clientId configurado en Keycloak
+  clientId: 'testappclient',
 });
 
 export default function KeycloakProviderWrapper({ children }: { children: React.ReactNode }) {
