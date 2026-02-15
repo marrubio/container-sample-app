@@ -11,11 +11,11 @@ data:
     -- ALTER USER adminuser WITH SUPERUSER;
     -- GRANT ALL PRIVILEGES ON DATABASE testdb TO adminuser;
     -- Crear usuario keycloak
-    CREATE USER keycloakusr WITH PASSWORD 'keycloakusrpass123';
+    CREATE USER keycloakusr WITH PASSWORD 'changeit';
      -- Crear esquema keycloak en la base de datos keycloakdb
     CREATE SCHEMA keycloak AUTHORIZATION keycloakusr;
     -- Crear usuario backend
-    CREATE USER appusr WITH PASSWORD 'appusrpass123';
+    CREATE USER appusr WITH PASSWORD 'changeit';
      -- Crear esquema keycloak en la base de datos keycloakdb
     CREATE SCHEMA app AUTHORIZATION appusr;
 
