@@ -1,0 +1,47 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: sample-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample-backend
+  template:
+    metadata:
+      labels:
+        app: sample-backend
+    spec:
+      containers:
+        - name: sample-backend
+          image: quay.io/mario_rubio/sample-backend:latest
+          ports:
+            - name: http
+              containerPort: 8081
+              protocol: TCP
+          env:
+            - name: DB_URL
+              value: "jdbc:postgresql://postgres:5432/testdb?currentSchema=app"
+            - name: DB_USERNAME
+              value: "appusr"
+            - name: DB_PASSWORD
+              value: "appusrpass123"
+            - name: KC_BASE_URL
+              value: "https://keycloak-mario-rubio-dev.apps.rm1.0a51.p1.openshiftapps.com/realms/testapp"
+          resources:
+            requests:
+              memory: "180Mi"
+              cpu: "10m"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: sample-backend-svc
+spec:
+  ports:
+    - name: http-8081
+      port: 8081
+      protocol: TCP
+      targetPort: 8081
+  selector:
+    app: sample-backend
