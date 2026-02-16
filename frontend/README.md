@@ -34,3 +34,35 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Build and run the Docker container for production
+
+1. Build the Docker image with Podman:
+
+```bash
+podman build -t sample-frontend:latest -f docker/Dockerfile .
+```
+
+SSL Problems solution
+```bash
+podman build --tls-verify=false -t sample-frontend:latest -f docker/Dockerfile .
+```
+
+2. Run the container exposing port 3000:
+
+```bash
+podman run -p 3000:3000 sample-frontend:latest
+```
+
+3. Retag the container
+```bash
+podman tag sample-frontend:latest  quay.io/mario_rubio/sample-frontend:latest  
+```
+
+3. Push the image
+
+```bash
+podman push quay.io/mario_rubio/sample-frontend:latest
+```
+
+You can access the application at [http://localhost:3000](http://localhost:3000).

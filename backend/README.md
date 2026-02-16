@@ -69,8 +69,20 @@ Build the Docker image using the Dockerfile in the `docker` folder:
 docker build -t sample-backend:latest -f docker/Dockerfile .
 ```
 
+Build image using `podman`:
+
+```bash
+podman build -t sample-backend:latest -f docker/Dockerfile .
+```
+
+Run image locally, exposing port 3000:
+
+```bash
+podman run -p 8081:8081 sample-backend:latest
+```
+
 ### Exposed Ports
-- The Dockerfile exposes port `8081`. Ensure the application is configured to run on this port, or update the Dockerfile/application properties accordingly.
+- The Dockerfile exposes port `3000`. Ensure the application is configured to run on this port, or update the Dockerfile/application properties accordingly.
 
 ## Deployment in Kubernetes/OpenShift
 
@@ -94,6 +106,24 @@ docker build -t sample-backend:latest -f docker/Dockerfile .
         - name: KC_BASE_URL
           value: "https://keycloak/realms/testapp"
 ```
+
+## Configuración de CORS para despliegue
+
+Para permitir el acceso desde diferentes orígenes (por ejemplo, desde la ruta de OpenShift del frontend), configura la propiedad externa `app.cors.allowed-origins`.
+
+Puedes hacerlo añadiendo en tu `application.properties` o como variable de entorno:
+
+**application.properties:**
+```
+app.cors.allowed-origins=http://localhost:3000,https://frontend-mario-rubio-dev.apps.rm1.0a51.p1.openshiftapps.com
+```
+
+**Variable de entorno (OpenShift):**
+```
+APP_CORS_ALLOWED_ORIGINS=http://localhost:3000,https://frontend-mario-rubio-dev.apps.rm1.0a51.p1.openshiftapps.com
+```
+
+Esto permite construir una sola vez y desplegar en cualquier entorno sin recompilar el backend.
 
 ## Security Recommendations
 

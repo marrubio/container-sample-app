@@ -27,7 +27,7 @@ spec:
             - name: DB_PASSWORD
               value: "appusrpass123"
             - name: KC_BASE_URL
-              value: "https://keycloak-mario-rubio-dev.apps.rm1.0a51.p1.openshiftapps.com/realms/testapp"
+              value: "https://keycloak/realms/testapp"
           resources:
             requests:
               memory: "180Mi"
