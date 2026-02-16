@@ -11,7 +11,7 @@ Sample containerized application combining a Java backend, React frontend, Postg
 ## Quick Start
 
 ### Prerequisites
-- Java 17+
+- Java 21+
 - Node.js 18+
 - Maven
 - Docker
