@@ -2,6 +2,7 @@
 import { useKeycloak } from "@react-keycloak/web";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { BACKEND_URL } from "./config";
 
 interface Game {
   id: number;
@@ -20,12 +21,12 @@ export default function Home() {
     if (initialized && keycloak?.authenticated) {
       setLoading(true);
       axios
-        .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/games`, {
+        .get(`${BACKEND_URL}/games`, {
           headers: {
             Authorization: `Bearer ${keycloak.token}`,
           },
         })
-        .then((res) => setGames(res.data))
+        .then((res) => setGames(Array.isArray(res.data) ? res.data : []))
         .finally(() => setLoading(false));
     }
   }, [initialized, keycloak]);

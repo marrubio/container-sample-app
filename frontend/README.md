@@ -66,3 +66,57 @@ podman push quay.io/mario_rubio/sample-frontend:latest
 ```
 
 You can access the application at [http://localhost:3000](http://localhost:3000).
+
+## Static Export and Keycloak Configuration
+
+This project supports static export using `next export` for optimal SPA deployment. To configure Keycloak authentication in static builds, set the following environment variables **before building**:
+
+- `NEXT_PUBLIC_KEYCLOAK_URL` (e.g. https://your-keycloak-domain/)
+- `NEXT_PUBLIC_KEYCLOAK_REALM` (e.g. yourrealm)
+- `NEXT_PUBLIC_KEYCLOAK_CLIENTID` (e.g. yourclientid)
+
+Example:
+
+```bash
+NEXT_PUBLIC_KEYCLOAK_URL=https://keycloak.example.com/ \
+NEXT_PUBLIC_KEYCLOAK_REALM=myrealm \
+NEXT_PUBLIC_KEYCLOAK_CLIENTID=myclientid \
+npm run build && npm run export
+```
+
+The exported static site in `out/` can then be served with nginx or any static file server.
+
+**Note:** All authentication is handled client-side. The backend must validate the Keycloak token on each API request.
+
+## Backend Endpoint Configuration
+
+To configure the backend endpoint for API calls, set the environment variable `NEXT_PUBLIC_BACKEND_URL` before building the frontend. This value will be used for all API requests from the SPA.
+
+Example:
+
+```bash
+NEXT_PUBLIC_BACKEND_URL=https://your-backend-domain npm run build
+```
+
+The default value is `http://localhost:8080` if not set.
+
+## Environment Configuration for Backend Endpoint
+
+The backend endpoint is now configured using environment files:
+
+- `.env.development` for development
+- `.env.production` for production
+
+Example:
+
+.env.development
+```
+NEXT_PUBLIC_BACKEND_URL=http://localhost:8080
+```
+
+.env.production
+```
+NEXT_PUBLIC_BACKEND_URL=https://backend.prod.com
+```
+
+The frontend will use the correct endpoint depending on the build environment. Do not hardcode backend URLs in the source code.
