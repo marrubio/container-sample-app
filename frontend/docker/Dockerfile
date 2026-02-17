@@ -12,5 +12,9 @@ RUN cp .env.production .env && npm run build
 FROM nginx:alpine
 COPY --from=builder /app/out /usr/share/nginx/html
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
+RUN mkdir -p /var/cache/nginx /var/run /var/log/nginx \
+    && chown -R 1001:0 /var/cache/nginx /var/run /var/log/nginx /usr/share/nginx/html \
+    && chmod -R g=u /var/cache/nginx /var/run /var/log/nginx /usr/share/nginx/html
+USER 1001
+EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]
