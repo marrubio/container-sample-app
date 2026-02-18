@@ -3,6 +3,7 @@ import { useKeycloak } from "@react-keycloak/web";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BACKEND_URL } from "./config";
+import Layout from "../components/Layout";
 
 interface Game {
   id: number;
@@ -18,42 +19,59 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
     if (initialized && keycloak?.authenticated) {
-      setLoading(true);
-      axios
-        .get(`${BACKEND_URL}/games`, {
-          headers: {
-            Authorization: `Bearer ${keycloak.token}`,
-          },
-        })
-        .then((res) => setGames(Array.isArray(res.data) ? res.data : []))
-        .finally(() => setLoading(false));
+      (async () => {
+        if (!isMounted) return;
+        setLoading(true);
+        try {
+          const res = await axios.get(`${BACKEND_URL}/games`, {
+            headers: {
+              Authorization: `Bearer ${keycloak.token}`,
+            },
+          });
+          if (isMounted) setGames(Array.isArray(res.data) ? res.data : []);
+        } finally {
+          if (isMounted) setLoading(false);
+        }
+      })();
     }
+    return () => {
+      isMounted = false;
+    };
   }, [initialized, keycloak]);
 
-  if (!initialized) return <div>Cargando autenticación...</div>;
+  if (!initialized)
+    return (
+      <Layout>
+        <div>Authentication loading...</div>
+      </Layout>
+    );
   if (!keycloak?.authenticated)
-    return <button onClick={() => keycloak?.login()}>Iniciar sesión</button>;
-
+    return (
+      <Layout>
+        <button className="pixelart-btn" onClick={() => keycloak?.login()}>Login</button>
+      </Layout>
+    );
   return (
-    <main>
-      <h1>Listado de Juegos</h1>
-      <button onClick={() => keycloak?.logout()}>Cerrar sesión</button>
+    <Layout>
+      <h1>Games list</h1>
+      <button className="pixelart-btn" onClick={() => keycloak?.logout()}>Logout</button>
       {loading ? (
-        <p>Cargando juegos...</p>
+        <p>Loading games...</p>
       ) : (
-        <ul>
+        <ul className="pixelart-list">
           {games.map((game) => (
-            <li key={game.id}>
+            <li className="pixelart-list-item" key={game.id}>
               <strong>{game.title}</strong> ({game.developmentYear})
               <br />
               {game.description}
               <br />
-              Puntuación: {game.score}
+              Score: {game.score}
             </li>
           ))}
         </ul>
       )}
-    </main>
+    </Layout>
   );
 }
