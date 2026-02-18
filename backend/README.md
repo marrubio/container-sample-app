@@ -32,7 +32,7 @@ To run tests with the H2 profile:
 mvn test -f backend/pom.xml -Dspring.profiles.active=test
 ```
 
-## Configuration
+## Running Locally
 
 You must provide database credentials and URL as environment variables. These are not stored in `application.properties` for security reasons.
 
@@ -60,9 +60,6 @@ export DB_PASSWORD="password"
 export KC_BASE_URL="https://keycloak/realms/testapp"
 mvn spring-boot:run
 ```
-### Deployment Configuration
-
-When deploying to Kubernetes/OpenShift, set these environment variables in your deployment manifests or use secrets/configmaps for sensitive data.
 
 ## Docker Image
 
@@ -110,39 +107,23 @@ podman run -p 8081:8081 sample-backend:latest
           value: "https://keycloak/realms/testapp"
 ```
 
-## CORS configuration for deployment
+## Configuración de CORS para despliegue
 
-To allow access from different origins (for example, from the OpenShift frontend route), configure the external property `app.cors.allowed-origins`.
+Para permitir el acceso desde diferentes orígenes (por ejemplo, desde la ruta de OpenShift del frontend), configura la propiedad externa `app.cors.allowed-origins`.
 
-You can do this by adding it to your `application.properties` or as an environment variable:
+Puedes hacerlo añadiendo en tu `application.properties` o como variable de entorno:
 
 **application.properties:**
 ```
 app.cors.allowed-origins=http://localhost:3000,https://frontend-mario-rubio-dev.apps.rm1.0a51.p1.openshiftapps.com
 ```
 
-**Environment variable (OpenShift):**
+**Variable de entorno (OpenShift):**
 ```
 APP_CORS_ALLOWED_ORIGINS=http://localhost:3000,https://frontend-mario-rubio-dev.apps.rm1.0a51.p1.openshiftapps.com
 ```
 
-This allows you to build once and deploy to any environment without recompiling the backend.
-
-## Keycloak configuration for deployment
-
-To ensure authentication works correctly, you must configure the `KC_BASE_URL` environment variable in the backend deployment manifest (`deploy.yaml`). This variable must point to the base URL of your Keycloak instance and the corresponding realm. If it is not set correctly, the backend will not be able to validate JWT tokens and all protected endpoints will return `403 Forbidden`.
-
-### Example configuration in `deploy.yaml`:
-
-```yaml
-      env:
-        - name: KC_BASE_URL
-          value: "http://keycloak/realms/testapp"
-```
-
-Make sure the URL matches exactly your Keycloak instance and the realm you are using. Adjust this value according to the environment (development, testing, production, etc.).
-
-> **Important:** If you change the environment or Keycloak instance, always review and update this variable to avoid authentication issues.
+Esto permite construir una sola vez y desplegar en cualquier entorno sin recompilar el backend.
 
 ## Security Recommendations
 
@@ -164,4 +145,3 @@ Make sure the URL matches exactly your Keycloak instance and the realm you are u
 ## Contact
 
 For questions or support, contact the repository maintainer.
-
