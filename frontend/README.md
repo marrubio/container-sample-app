@@ -40,12 +40,12 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 1. Build the Docker image with Podman:
 
 ```bash
-podman build -t sample-frontend:latest -f docker/Dockerfile .
+podman build -t sample-frontend:latest -f Dockerfile .
 ```
 
-SSL Problems solution
+SSL Problems bypass
 ```bash
-podman build --tls-verify=false -t sample-frontend:latest -f docker/Dockerfile .
+podman build --tls-verify=false -t sample-frontend:latest -f Dockerfile .
 ```
 
 2. Run the container exposing port 3000:
@@ -59,7 +59,7 @@ podman run -p 3000:3000 sample-frontend:latest
 podman tag sample-frontend:latest  quay.io/mario_rubio/sample-frontend:latest  
 ```
 
-3. Push the image
+4. Push the image
 
 ```bash
 podman push quay.io/mario_rubio/sample-frontend:latest

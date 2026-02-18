@@ -66,13 +66,13 @@ mvn spring-boot:run
 Build the Docker image using the Dockerfile in the `docker` folder:
 
 ```bash
-docker build -t sample-backend:latest -f docker/Dockerfile .
+docker build -t sample-backend:latest -f Dockerfile .
 ```
 
 Build image using `podman`:
 
 ```bash
-podman build -t sample-backend:latest -f docker/Dockerfile .
+podman build -t sample-backend:latest -f Dockerfile .
 ```
 
 Run image locally, exposing port 3000:
