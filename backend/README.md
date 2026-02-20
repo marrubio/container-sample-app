@@ -142,6 +142,12 @@ Esto permite construir una sola vez y desplegar en cualquier entorno sin recompi
 - Authentication via Keycloak
 - Database integration (PostgreSQL/H2)
 
+## Contribution & Documentation Guidelines
+
+- All source code, comments, and documentation must be written in **English**.
+- Any change related to configuration or startup procedures in the backend must be documented in this `README.md`.
+- Follow **Clean Code** and **Clean Architecture** principles for all backend code.
+
 ## Contact
 
 For questions or support, contact the repository maintainer.

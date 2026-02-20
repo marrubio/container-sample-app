@@ -37,3 +37,6 @@ oc apply -f deploy-frontend.yaml
 oc port-forward svc/postgresql 5432:5432
 ```
 
+## Contribution & Documentation Guidelines
+
+- All source code, comments, and documentation must be written in **English**.

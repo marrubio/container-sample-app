@@ -120,3 +120,9 @@ NEXT_PUBLIC_BACKEND_URL=https://backend.prod.com
 ```
 
 The frontend will use the correct endpoint depending on the build environment. Do not hardcode backend URLs in the source code.
+
+## Contribution & Documentation Guidelines
+
+- All source code, comments, and documentation must be written in **English**.
+- Any change related to configuration or startup procedures in the frontend must be documented in this `README.md`.
+- Follow **Clean Code** and **Clean Architecture** principles for all frontend code.
