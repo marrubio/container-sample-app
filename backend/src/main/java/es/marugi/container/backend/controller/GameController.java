@@ -1,5 +1,6 @@
 package es.marugi.container.backend.controller;
 
+import es.marugi.container.backend.dto.CreateGameRequestDTO;
 import es.marugi.container.backend.dto.GameDTO;
 import es.marugi.container.backend.entity.Game;
 import es.marugi.container.backend.mapper.GameMapper;
@@ -32,7 +33,7 @@ public class GameController {
     }
 
     @PostMapping
-    public GameDTO createGame(@RequestBody GameDTO gameDTO) {
+    public GameDTO createGame(@RequestBody CreateGameRequestDTO gameDTO) {
         Game game = gameMapper.toEntity(gameDTO);
         Game created = gameCommandService.createGame(game);
         return gameMapper.toDTO(created);
