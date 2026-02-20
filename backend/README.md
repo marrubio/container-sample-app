@@ -160,7 +160,7 @@ A new REST endpoint has been added to allow the creation of games:
 
 ### Example Request
 ```json
-POST /games
+POST /api/games
 {
   "title": "Example Game",
   "description": "A new game",
