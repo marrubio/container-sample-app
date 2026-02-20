@@ -33,7 +33,7 @@ components:
       deployment/memoryRequest: 180Mi
       deployment/container-port: 8081
     kubernetes:
-      uri: depoly-backend.yaml
+      uri: deploy-backend.yaml
       endpoints:
         - name: http-8081
           targetPort: 8081

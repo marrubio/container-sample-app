@@ -1,24 +1,25 @@
 # container-sample-app
 
-Sample containerized application combining a Java backend, React frontend, PostgreSQL database, and Keycloak authentication.
+🚀 Sample containerized application combining a Java backend, React frontend, PostgreSQL database, and Keycloak authentication.
+Designed by humans assisted by AI.
 
-## Repository Structure
+## 📁 Repository Structure
 
 - `backend/` - Spring Boot REST API, database integration, Keycloak authentication
 - `frontend/` - React web application
 - `infra/` - Kubernetes/OpenShift deployment manifests, secrets, and configuration
 
-## Quick Start
+## ⚡ Quick Start
 
-### Prerequisites
-- Java 21+
-- Node.js 18+
-- Maven
-- Docker
-- Access to a PostgreSQL instance
-- Keycloak server
+### 🛠️ Prerequisites
+- ☕ Java 21+
+- 🟢 Node.js 18+
+- 🧰 Maven
+- 🐳 Docker
+- 🗄️ Access to a PostgreSQL instance
+- 🛡️ Keycloak server
 
-### Build and Run Backend
+### 🔙 Build and Run Backend
 
 1. Set required environment variables for database and Keycloak:
    - `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`, `KC_BASE_URL`
@@ -29,7 +30,7 @@ Sample containerized application combining a Java backend, React frontend, Postg
    mvn spring-boot:run
    ```
 
-### Build and Run Frontend
+### 🔜 Build and Run Frontend
 
 1. Install dependencies:
    ```bash
@@ -41,28 +42,28 @@ Sample containerized application combining a Java backend, React frontend, Postg
    npm run dev
    ```
 
-### Docker Compose (optional)
+### 🐳 Docker Compose (optional)
 
 You can use Docker Compose to run all services together. Example file not included, but you can create one referencing the backend, frontend, PostgreSQL, and Keycloak containers.
 
-## Deployment
+## ☁️ Deployment
 
 Deployment manifests for Kubernetes/OpenShift are provided in the `infra/` folder. Configure secrets and environment variables as needed for production.
 
-## Security
+## 🔒 Security
 
 - Database credentials and sensitive information must be provided via environment variables or Kubernetes secrets.
 - Never store passwords in properties files or source code.
 
-## Documentation
+## 📚 Documentation
 
 - [Backend module documentation](backend/README.md)
 - [Frontend module documentation](frontend/README.md)
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License.
 
-## Contact
+## 📬 Contact
 
 For questions or support, contact the repository maintainer.
