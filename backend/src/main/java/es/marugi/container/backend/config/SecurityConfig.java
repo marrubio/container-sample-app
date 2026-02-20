@@ -3,6 +3,7 @@ package es.marugi.container.backend.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.Customizer;
@@ -39,6 +40,7 @@ public class SecurityConfig {
     }
 
     @Bean
+    @Profile("!test")
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http
             .cors(Customizer.withDefaults())
@@ -48,6 +50,18 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
+        return http.build();
+    }
+
+    @Bean
+    @Profile("test")
+    public SecurityFilterChain testSecurityFilterChain(HttpSecurity http) {
+        http
+            .cors(Customizer.withDefaults())
+            .authorizeHttpRequests(authz -> authz
+                .anyRequest().permitAll()
+            )
+            .csrf(org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer::disable);
         return http.build();
     }
 }

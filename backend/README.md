@@ -151,3 +151,32 @@ Esto permite construir una sola vez y desplegar en cualquier entorno sin recompi
 ## Contact
 
 For questions or support, contact the repository maintainer.
+
+## New Feature: Create Game Endpoint
+
+A new REST endpoint has been added to allow the creation of games:
+
+- **POST /games**: Registers a new game. The field `recordedAt` is automatically set to the current date and time.
+
+### Example Request
+```json
+POST /games
+{
+  "title": "Example Game",
+  "description": "A new game",
+  "score": 8.5,
+  "developmentYear": 2024
+}
+```
+
+### Example Response
+```json
+{
+  "id": 1,
+  "title": "Example Game",
+  "description": "A new game",
+  "score": 8.5,
+  "developmentYear": 2024,
+  "recordedAt": "2026-02-20T15:30:00"
+}
+```
