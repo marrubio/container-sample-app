@@ -1,5 +1,6 @@
 package es.marugi.container.backend.service.impl;
 
+import es.marugi.container.backend.dto.UpdateGameRequestDTO;
 import es.marugi.container.backend.entity.Game;
 import es.marugi.container.backend.repository.GameRepository;
 import es.marugi.container.backend.service.GameCommandService;
@@ -29,5 +30,21 @@ public class GameServiceImpl implements GameQueryService, GameCommandService {
         game.setRecordedAt(LocalDateTime.now());
         return gameRepository.save(game);
     }
-}
 
+    @Override
+    public Game updateGame(Long id, UpdateGameRequestDTO gameDTO) {
+        Game existing = gameRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Game not found"));
+        existing.setTitle(gameDTO.title());
+        existing.setDescription(gameDTO.description());
+        existing.setDevelopmentYear(gameDTO.developmentYear());
+        existing.setScore(gameDTO.score());
+        // Actualiza otros campos si es necesario
+        return gameRepository.save(existing);
+    }
+
+    @Override
+    public void deleteGame(Long id) {
+        gameRepository.deleteById(id);
+    }
+}
