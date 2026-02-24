@@ -1,6 +1,7 @@
 package es.marugi.container.backend;
 
 import es.marugi.container.backend.domain.model.Game;
+import es.marugi.container.backend.domain.repository.GameRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,6 @@ class GameControllerIntegrationTest {
 
     private WebTestClient webTestClient;
 
-    @Autowired
-    private GameRepository gameRepository;
 
     @BeforeEach
     void setUp() {

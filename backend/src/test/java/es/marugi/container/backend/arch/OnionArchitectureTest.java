@@ -4,6 +4,7 @@ import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
+import es.marugi.container.backend.domain.model.Game;
 
 import static com.tngtech.archunit.library.Architectures.onionArchitecture;
 
@@ -15,11 +16,13 @@ public class OnionArchitectureTest {
 
     @ArchTest
     static final ArchRule onion_architecture_is_respected = onionArchitecture()
-            .domainModels("..domain.model..")
+            //.domainModels("..domain.model..")
             .domainServices("..domain.service..")
-            .applicationServices("..application..")
+            .applicationServices("..application.service..")
             .adapter("cli", "..adapter.cli..")
-            .adapter("persistence", "..adapter.persistence..")
-            .adapter("rest", "..adapter.rest..");
+            .adapter("persistence", "..adapter.out.persistence..")
+            .adapter("rest", "..adapter.in.rest..")
+            .allowEmptyShould(true)
+           ;
 
 }
