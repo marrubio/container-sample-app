@@ -1,4 +1,4 @@
-package es.marugi.container.backend.config;
+package es.marugi.container.backend.infrastucture.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
