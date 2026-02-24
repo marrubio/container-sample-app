@@ -75,6 +75,18 @@
 			<artifactId>spring-boot-starter-webflux</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.tngtech.archunit</groupId>
+			<artifactId>archunit</artifactId>
+			<version>1.4.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.tngtech.archunit</groupId>
+			<artifactId>archunit-junit5</artifactId>
+			<version>1.4.1</version>
+			<scope>test</scope>
+		</dependency>
 		<!-- MapStruct for automatic mapping between DTOs and entities -->
 		<dependency>
 			<groupId>org.mapstruct</groupId>
