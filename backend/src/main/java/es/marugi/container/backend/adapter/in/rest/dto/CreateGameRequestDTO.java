@@ -1,6 +1,4 @@
-package es.marugi.container.backend.dto;
-
-import java.time.LocalDateTime;
+package es.marugi.container.backend.adapter.in.rest.dto;
 
 public record CreateGameRequestDTO(
     String title,

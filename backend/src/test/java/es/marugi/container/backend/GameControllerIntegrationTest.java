@@ -1,7 +1,7 @@
 package es.marugi.container.backend;
 
-import es.marugi.container.backend.entity.Game;
-import es.marugi.container.backend.repository.GameRepository;
+import es.marugi.container.backend.domain.model.Game;
+import es.marugi.container.backend.adapter.out.persistence.GameRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,7 +98,7 @@ class GameControllerIntegrationTest {
         updateRequest.put("title", "Updated Game Title");
         updateRequest.put("description", "Updated description");
         updateRequest.put("developmentYear", 2022);
-        updateRequest.put("score", 9.5);
+        updateRequest.put("score", 9);
 
         // PUT para actualizar el juego
         Game updatedGame = webTestClient.put()
@@ -113,7 +113,7 @@ class GameControllerIntegrationTest {
         assertThat(updatedGame.getTitle()).isEqualTo("Updated Game Title");
         assertThat(updatedGame.getDescription()).isEqualTo("Updated description");
         assertThat(updatedGame.getDevelopmentYear()).isEqualTo(2022);
-        assertThat(updatedGame.getScore()).isEqualTo(9.5);
+        assertThat(updatedGame.getScore()).isEqualTo(9);
        // assertThat(updatedGame.getRecordedAt()).isEqualTo(createdGame.getRecordedAt()); // La fecha no debe cambiar
     }
 }

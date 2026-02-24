@@ -1,4 +1,4 @@
-package es.marugi.container.backend.dto;
+package es.marugi.container.backend.domain.model;
 
 import java.time.LocalDateTime;
 
