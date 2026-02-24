@@ -9,6 +9,7 @@ Designed by humans assisted by AI.
 - `frontend/` - React web application
 - `infra/` - Kubernetes/OpenShift deployment manifests, secrets, and configuration
 
+
 ## ⚡ Quick Start
 
 ### 🛠️ Prerequisites

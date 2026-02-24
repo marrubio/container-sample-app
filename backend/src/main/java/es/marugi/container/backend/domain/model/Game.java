@@ -1,4 +1,4 @@
-package es.marugi.container.backend.entity;
+package es.marugi.container.backend.domain.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,12 +1,12 @@
-package es.marugi.container.backend.controller;
+package es.marugi.container.backend.adapter.in.rest.controller;
 
-import es.marugi.container.backend.dto.CreateGameRequestDTO;
-import es.marugi.container.backend.dto.GameDTO;
-import es.marugi.container.backend.dto.UpdateGameRequestDTO;
-import es.marugi.container.backend.entity.Game;
-import es.marugi.container.backend.mapper.GameMapper;
-import es.marugi.container.backend.service.GameCommandService;
-import es.marugi.container.backend.service.GameQueryService;
+import es.marugi.container.backend.adapter.in.rest.dto.GameResponseDTO;
+import es.marugi.container.backend.adapter.in.rest.dto.CreateGameRequestDTO;
+import es.marugi.container.backend.adapter.in.rest.dto.UpdateGameRequestDTO;
+import es.marugi.container.backend.adapter.in.rest.mapper.GameRestMapper;
+import es.marugi.container.backend.domain.model.GameDTO;
+import es.marugi.container.backend.domain.service.GameCommandService;
+import es.marugi.container.backend.domain.service.GameQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,26 +28,26 @@ public class GameController {
     @Autowired
     private GameCommandService gameCommandService;
     @Autowired
-    private GameMapper gameMapper;
+    private GameRestMapper gameMapper;
 
     @GetMapping
-    public List<GameDTO> getGames() {
+    public List<GameResponseDTO> getGames() {
         return gameQueryService.getAllGames().stream()
-            .map(gameMapper::toDTO)
+            .map(gameMapper::toResponseDTO)
             .collect(Collectors.toList());
     }
 
     @PostMapping
-    public GameDTO createGame(@RequestBody CreateGameRequestDTO gameDTO) {
-        Game game = gameMapper.toEntity(gameDTO);
-        Game created = gameCommandService.createGame(game);
-        return gameMapper.toDTO(created);
+    public GameResponseDTO createGame(@RequestBody CreateGameRequestDTO createRequest) {
+        GameDTO gameEntity = gameMapper.toDto(createRequest);
+        GameDTO created = gameCommandService.createGame(gameEntity);
+        return gameMapper.toResponseDTO(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<GameDTO> updateGame(@PathVariable Long id, @RequestBody UpdateGameRequestDTO gameDTO) {
-        Game updated = gameCommandService.updateGame(id, gameDTO);
-        return ResponseEntity.ok(gameMapper.toDTO(updated));
+    public ResponseEntity<GameResponseDTO> updateGame(@PathVariable Long id, @RequestBody UpdateGameRequestDTO updateRequest) {
+        GameDTO updated = gameCommandService.updateGame(id, updateRequest);
+        return ResponseEntity.ok(gameMapper.toResponseDTO(updated));
     }
 
     @DeleteMapping("/{id}")
@@ -55,4 +55,5 @@ public class GameController {
         gameCommandService.deleteGame(id);
         return ResponseEntity.noContent().build();
     }
+
 }

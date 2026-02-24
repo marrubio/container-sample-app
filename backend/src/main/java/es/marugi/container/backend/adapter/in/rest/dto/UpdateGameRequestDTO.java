@@ -1,4 +1,4 @@
-package es.marugi.container.backend.dto;
+package es.marugi.container.backend.adapter.in.rest.dto;
 
 public record UpdateGameRequestDTO(
     String title,
