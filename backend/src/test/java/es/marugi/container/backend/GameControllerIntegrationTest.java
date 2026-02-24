@@ -1,7 +1,6 @@
 package es.marugi.container.backend;
 
 import es.marugi.container.backend.domain.model.Game;
-import es.marugi.container.backend.adapter.out.persistence.GameRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

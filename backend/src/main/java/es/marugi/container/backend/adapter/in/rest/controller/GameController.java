@@ -4,9 +4,10 @@ import es.marugi.container.backend.adapter.in.rest.dto.GameResponseDTO;
 import es.marugi.container.backend.adapter.in.rest.dto.CreateGameRequestDTO;
 import es.marugi.container.backend.adapter.in.rest.dto.UpdateGameRequestDTO;
 import es.marugi.container.backend.adapter.in.rest.mapper.GameRestMapper;
-import es.marugi.container.backend.domain.model.GameDTO;
-import es.marugi.container.backend.domain.service.GameCommandService;
-import es.marugi.container.backend.domain.service.GameQueryService;
+import es.marugi.container.backend.application.dto.CreateGameDTO;
+import es.marugi.container.backend.application.dto.GameDTO;
+import es.marugi.container.backend.application.service.GameCommandService;
+import es.marugi.container.backend.application.service.GameQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,14 +40,14 @@ public class GameController {
 
     @PostMapping
     public GameResponseDTO createGame(@RequestBody CreateGameRequestDTO createRequest) {
-        GameDTO gameEntity = gameMapper.toDto(createRequest);
-        GameDTO created = gameCommandService.createGame(gameEntity);
+        CreateGameDTO createGameDTO = gameMapper.toDto(createRequest);
+        GameDTO created = gameCommandService.createGame(createGameDTO);
         return gameMapper.toResponseDTO(created);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<GameResponseDTO> updateGame(@PathVariable Long id, @RequestBody UpdateGameRequestDTO updateRequest) {
-        GameDTO updated = gameCommandService.updateGame(id, updateRequest);
+        GameDTO updated = gameCommandService.updateGame(id,gameMapper.toDto(updateRequest));
         return ResponseEntity.ok(gameMapper.toResponseDTO(updated));
     }
 
