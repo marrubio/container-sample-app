@@ -1,12 +1,11 @@
-package es.marugi.container.backend.domain.service.impl;
+package es.marugi.container.backend.application.service;
 
-import es.marugi.container.backend.domain.mapper.GameMapper;
-import es.marugi.container.backend.domain.model.GameDTO;
-import es.marugi.container.backend.adapter.in.rest.dto.UpdateGameRequestDTO;
+import es.marugi.container.backend.application.dto.GameDTO;
+import es.marugi.container.backend.application.mapper.GameMapper;
+import es.marugi.container.backend.application.dto.CreateGameDTO;
 import es.marugi.container.backend.domain.model.Game;
-import es.marugi.container.backend.adapter.out.persistence.GameRepository;
-import es.marugi.container.backend.domain.service.GameCommandService;
-import es.marugi.container.backend.domain.service.GameQueryService;
+import es.marugi.container.backend.application.dto.UpdateGameDTO;
+import es.marugi.container.backend.domain.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +32,7 @@ public class GameServiceImpl implements GameQueryService, GameCommandService {
     }
 
     @Override
-    public GameDTO createGame(GameDTO game) {
+    public GameDTO createGame(CreateGameDTO game) {
         Game entity = gameMapper.toEntity(game);
         entity.setRecordedAt(LocalDateTime.now());
         Game savedGame = gameRepository.save(entity);
@@ -41,7 +40,7 @@ public class GameServiceImpl implements GameQueryService, GameCommandService {
     }
 
     @Override
-    public GameDTO updateGame(Long id, UpdateGameRequestDTO gameDTO) {
+    public GameDTO updateGame(Long id, UpdateGameDTO gameDTO) {
         Game existing = gameRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Game not found"));
         existing.setTitle(gameDTO.title());
@@ -58,3 +57,4 @@ public class GameServiceImpl implements GameQueryService, GameCommandService {
     }
 
 }
+
