@@ -1,10 +1,8 @@
 package es.marugi.container.backend;
 
 import es.marugi.container.backend.domain.model.Game;
-import es.marugi.container.backend.domain.repository.GameRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
@@ -41,7 +39,8 @@ class GameControllerIntegrationTest {
             .uri("/api/games")
             .bodyValue(newGame)
             .exchange()
-            .expectStatus().isOk()
+            .expectStatus().isCreated()
+            .expectHeader().valueMatches("Location", ".*/api/games/\\d+$")
             .expectBody(Game.class)
             .returnResult().getResponseBody();
 
@@ -49,6 +48,17 @@ class GameControllerIntegrationTest {
         assertThat(createdGame.getId()).isNotNull();
         assertThat(createdGame.getRecordedAt()).isNotNull();
         assertThat(createdGame.getTitle()).isEqualTo("Integration Test Game");
+
+        Game retrievedGame = webTestClient.get()
+            .uri("/api/games/" + createdGame.getId())
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody(Game.class)
+            .returnResult().getResponseBody();
+
+        assertThat(retrievedGame).isNotNull();
+        assertThat(retrievedGame.getId()).isEqualTo(createdGame.getId());
+        assertThat(retrievedGame.getTitle()).isEqualTo("Integration Test Game");
 
         // GET para recuperar todos los juegos
         Game[] games = webTestClient.get()
@@ -84,7 +94,7 @@ class GameControllerIntegrationTest {
             .uri("/api/games")
             .bodyValue(newGame)
             .exchange()
-            .expectStatus().isOk()
+            .expectStatus().isCreated()
             .expectBody(Game.class)
             .returnResult().getResponseBody();
 
@@ -113,5 +123,58 @@ class GameControllerIntegrationTest {
         assertThat(updatedGame.getDevelopmentYear()).isEqualTo(2022);
         assertThat(updatedGame.getScore()).isEqualTo(9);
        // assertThat(updatedGame.getRecordedAt()).isEqualTo(createdGame.getRecordedAt()); // La fecha no debe cambiar
+    }
+
+    @Test
+    void createGameReturnsBadRequestWhenPayloadIsInvalid() {
+        var invalidRequest = new java.util.HashMap<String, Object>();
+        invalidRequest.put("title", "");
+        invalidRequest.put("description", "Valid description");
+        invalidRequest.put("developmentYear", 2026);
+        invalidRequest.put("score", 11);
+
+        webTestClient.post()
+            .uri("/api/games")
+            .bodyValue(invalidRequest)
+            .exchange()
+            .expectStatus().isBadRequest()
+            .expectBody()
+            .jsonPath("$.status").isEqualTo(400)
+            .jsonPath("$.error").isEqualTo("Bad Request")
+            .jsonPath("$.message").exists()
+            .jsonPath("$.path").isEqualTo("/api/games");
+    }
+
+    @Test
+    void updateGameReturnsNotFoundWhenGameDoesNotExist() {
+        var updateRequest = new java.util.HashMap<String, Object>();
+        updateRequest.put("title", "Missing Game");
+        updateRequest.put("description", "This game does not exist");
+        updateRequest.put("developmentYear", 2022);
+        updateRequest.put("score", 9.5);
+
+        webTestClient.put()
+            .uri("/api/games/999999")
+            .bodyValue(updateRequest)
+            .exchange()
+            .expectStatus().isNotFound()
+            .expectBody()
+            .jsonPath("$.status").isEqualTo(404)
+            .jsonPath("$.error").isEqualTo("Not Found")
+            .jsonPath("$.message").isEqualTo("Game with id 999999 not found")
+            .jsonPath("$.path").isEqualTo("/api/games/999999");
+    }
+
+    @Test
+    void deleteGameReturnsNotFoundWhenGameDoesNotExist() {
+        webTestClient.delete()
+            .uri("/api/games/999999")
+            .exchange()
+            .expectStatus().isNotFound()
+            .expectBody()
+            .jsonPath("$.status").isEqualTo(404)
+            .jsonPath("$.error").isEqualTo("Not Found")
+            .jsonPath("$.message").isEqualTo("Game with id 999999 not found")
+            .jsonPath("$.path").isEqualTo("/api/games/999999");
     }
 }
