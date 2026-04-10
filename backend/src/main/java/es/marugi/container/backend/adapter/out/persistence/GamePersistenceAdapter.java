@@ -2,12 +2,12 @@ package es.marugi.container.backend.adapter.out.persistence;
 
 import es.marugi.container.backend.domain.model.Game;
 import es.marugi.container.backend.domain.repository.GameRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Repository
 public class GamePersistenceAdapter implements GameRepository {
 
     private final GameJpaRepository gameRepository;
