@@ -85,10 +85,10 @@ Archivo principal:
 
 ### 6. Configuración tipada con `@ConfigurationProperties`
 
-- [ ] Sustituir el uso de `@Value("${app.cors.allowed-origins}")` en `SecurityConfig`.
-- [ ] Crear una clase de propiedades tipadas para CORS, por ejemplo:
+- [x] Sustituir el uso de `@Value("${app.cors.allowed-origins}")` en `SecurityConfig`.
+- [x] Crear una clase de propiedades tipadas para CORS, por ejemplo:
   - `CorsProperties`
-- [ ] Mapear `app.cors.allowed-origins` a una `List<String>`.
+- [x] Mapear `app.cors.allowed-origins` a una `List<String>`.
 
 Archivos implicados:
 
@@ -99,10 +99,10 @@ Archivos implicados:
 
 ### 7. Ajustes de seguridad
 
-- [ ] Mantener lectura pública sólo si es un requisito funcional real.
-- [ ] Revisar si `POST`, `PUT` y `DELETE` deben requerir autenticación y/o roles.
-- [ ] Asegurar que la API sea explícitamente stateless.
-- [ ] Revisar CORS para permitir sólo orígenes necesarios.
+- [x] Mantener lectura pública sólo si es un requisito funcional real.
+- [x] Revisar si `POST`, `PUT` y `DELETE` deben requerir autenticación y/o roles.
+- [x] Asegurar que la API sea explícitamente stateless.
+- [x] Revisar CORS para permitir sólo orígenes necesarios.
 
 Archivo principal:
 
