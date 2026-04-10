@@ -112,8 +112,8 @@ Archivo principal:
 
 ### 8. Semántica Spring en persistencia
 
-- [ ] Cambiar `@Component` por `@Repository` en `GamePersistenceAdapter`.
-- [ ] Mantener la separación actual:
+- [x] Cambiar `@Component` por `@Repository` en `GamePersistenceAdapter`.
+- [x] Mantener la separación actual:
   - `GameRepository` como puerto
   - `GameJpaRepository` como repositorio Spring Data
   - `GamePersistenceAdapter` como adaptador saliente
@@ -126,8 +126,8 @@ Archivo principal:
 
 ### 9. Separar bootstrap y controller
 
-- [ ] Quitar `@RestController` de `DemoApplication` si no es necesario.
-- [ ] Mover el endpoint raíz `"/"` a un controller dedicado si se quiere mantener.
+- [x] Quitar `@RestController` de `DemoApplication` si no es necesario.
+- [x] Eliminar el endpoint raíz `"/"` porque ya no se quiere mantener.
 
 Archivo principal:
 
@@ -137,13 +137,13 @@ Archivo principal:
 
 ### 10. Logging útil y consistente
 
-- [ ] Añadir logging SLF4J en puntos de negocio relevantes:
+- [x] Añadir logging SLF4J en puntos de negocio relevantes:
   - creación
   - actualización
   - borrado
   - recursos no encontrados
-- [ ] Mantener logs parametrizados (`logger.info("... {}", valor)`).
-- [ ] Evitar concatenación de strings en logs.
+- [x] Mantener logs parametrizados (`logger.info("... {}", valor)`).
+- [x] Evitar concatenación de strings en logs.
 
 Archivos candidatos:
 

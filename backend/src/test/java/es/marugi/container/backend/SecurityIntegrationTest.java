@@ -52,7 +52,6 @@ class SecurityIntegrationTest {
     void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(context)
             .apply(springSecurity())
-            .defaultRequest(get("/").contextPath("/api"))
             .build();
     }
 
