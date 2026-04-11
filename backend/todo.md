@@ -5,7 +5,7 @@ Este documento recoge los cambios recomendados para que el `backend` cumpla mejo
 ## Criterios usados
 
 - Seguir buenas prácticas Spring Boot en DI, validación, configuración, testing y seguridad.
-- No romper la separación actual entre `adapter`, `application`, `domain` e `infrastucture`.
+- No romper la separación actual entre `adapter`, `application`, `domain` e `infrastructure`.
 - Priorizar primero robustez de API y mantenibilidad.
 
 ---
@@ -92,8 +92,8 @@ Archivo principal:
 
 Archivos implicados:
 
-- `src/main/java/es/marugi/container/backend/infrastucture/config/SecurityConfig.java`
-- nuevo archivo de propiedades en `src/main/java/es/marugi/container/backend/infrastucture/config/`
+- `src/main/java/es/marugi/container/backend/infrastructure/config/SecurityConfig.java`
+- nuevo archivo de propiedades en `src/main/java/es/marugi/container/backend/infrastructure/config/`
 
 **Objetivo:** cumplir la skill en `Configuration / Type-Safe Properties`.
 
@@ -106,7 +106,7 @@ Archivos implicados:
 
 Archivo principal:
 
-- `src/main/java/es/marugi/container/backend/infrastucture/config/SecurityConfig.java`
+- `src/main/java/es/marugi/container/backend/infrastructure/config/SecurityConfig.java`
 
 **Objetivo:** reforzar el cumplimiento de la skill en `Security`.
 
@@ -158,10 +158,10 @@ Archivos candidatos:
 
 ### 11. Mejorar la configuración JPA
 
-- [ ] Añadir `spring.jpa.open-in-view=false` en propiedades si la API no necesita Open Session in View.
-- [ ] Revisar `spring.jpa.hibernate.ddl-auto=update` y valorar migraciones con Flyway/Liquibase.
-- [ ] Limpiar el perfil `test` para evitar warnings por mezcla de H2 con configuración PostgreSQL.
-- [ ] Revisar si `spring.jpa.properties.hibernate.dialect` debe eliminarse para dejar autodetección.
+- [x] Añadir `spring.jpa.open-in-view=false` en propiedades si la API no necesita Open Session in View.
+- [x] Revisar `spring.jpa.hibernate.ddl-auto=update` y valorar migraciones con Flyway/Liquibase.
+- [x] Limpiar el perfil `test` para evitar warnings por mezcla de H2 con configuración PostgreSQL.
+- [x] Revisar si `spring.jpa.properties.hibernate.dialect` debe eliminarse para dejar autodetección.
 
 Archivos implicados:
 
@@ -171,17 +171,22 @@ Archivos implicados:
 
 **Objetivo:** mejorar limpieza operativa y evitar configuración innecesaria.
 
+**Decisión actual:**
+
+- Se mantiene `spring.jpa.hibernate.ddl-auto=update` temporalmente en entornos de desarrollo/local.
+- La adopción de Flyway/Liquibase se deja para una iteración posterior específica.
+
 ### 12. Reforzar tests
 
-- [ ] Añadir unit tests de servicio con Mockito:
+- [x] Añadir unit tests de servicio con Mockito:
   - `GameServiceImplTest`
-- [ ] Añadir test slice web con `@WebMvcTest`:
+- [x] Añadir test web focalizado para:
   - validación
   - errores HTTP
   - contrato REST
-- [ ] Añadir test slice de persistencia con `@DataJpaTest`.
-- [ ] Adaptar `GameControllerIntegrationTest` para usar DTOs REST / JSON en lugar de `Game` como contrato externo.
-- [ ] Añadir tests para:
+- [x] Añadir test focalizado de persistencia para repositorio.
+- [x] Adaptar `GameControllerIntegrationTest` para usar DTOs REST / JSON en lugar de `Game` como contrato externo.
+- [x] Añadir tests para:
   - `404 Not Found`
   - `400 Bad Request`
   - seguridad de endpoints de escritura
@@ -193,30 +198,42 @@ Archivos existentes a revisar:
 
 **Objetivo:** cumplir la skill en `Testing` y validar de verdad el contrato HTTP.
 
+**Decisión actual:**
+
+- En esta baseline con `Spring Boot 4.0.2`, `GameControllerWebMvcTest` se implementa como test unitario/standalone de controller + validación + `GlobalExceptionHandler`, evitando depender de slices Boot no resueltas en el proyecto actual.
+- `GameJpaRepositoryTest` se implementa con `@SpringBootTest`, perfil `test`, H2 y transacciones para mantener cobertura real del repositorio sin dejar el build en estado inconsistente.
+
 ### 13. Revisar mappers y limpieza técnica
 
-- [ ] Revisar si `GameRestMapper.INSTANCE` sobra al usar `componentModel = "spring"`.
-- [ ] Revisar imports no usados y pequeños desajustes de estilo.
-- [ ] Corregir el nombre del paquete `infrastucture` -> `infrastructure` si se decide hacer limpieza general.
+- [x] Revisar si `GameRestMapper.INSTANCE` sobra al usar `componentModel = "spring"`.
+- [x] Revisar imports no usados y pequeños desajustes de estilo.
+- [x] Corregir el nombre del paquete `infrastucture` -> `infrastructure` si se decide hacer limpieza general.
 
 Archivos candidatos:
 
 - `src/main/java/es/marugi/container/backend/adapter/in/rest/mapper/GameRestMapper.java`
-- `src/main/java/es/marugi/container/backend/infrastucture/...`
+- `src/main/java/es/marugi/container/backend/infrastructure/...`
 
 **Objetivo:** limpieza técnica y consistencia interna.
 
 ### 14. Revisar dependencias y versionado
 
-- [ ] Verificar si la versión usada de Spring Boot es la deseada para el proyecto.
-- [ ] Comprobar compatibilidad de versiones de MapStruct, ArchUnit y plugins Maven.
-- [ ] Añadir dependencias nuevas sólo si están justificadas (`validation`, Flyway, Testcontainers, etc.).
+- [x] Verificar si la versión usada de Spring Boot es la deseada para el proyecto.
+- [x] Comprobar compatibilidad de versiones de MapStruct, ArchUnit y plugins Maven.
+- [x] Añadir dependencias nuevas sólo si están justificadas (`validation`, Flyway, Testcontainers, etc.).
 
 Archivo principal:
 
 - `pom.xml`
 
 **Objetivo:** mantener el proyecto consistente y sostenible.
+
+**Decisión actual:**
+
+- Se mantiene `Spring Boot 4.0.2` como baseline del proyecto en esta iteración.
+- Se mantienen `MapStruct 1.5.5.Final`, `ArchUnit 1.4.1` y `maven-compiler-plugin 3.10.1` al ser compatibles con la compilación y los tests ejecutados.
+- Se elimina `spring-boot-starter-oauth2-client` por no tener uso en el código actual.
+- No se añaden dependencias extra de test slice no gestionadas por el parent para evitar dejar el `pom.xml` en estado inválido.
 
 ---
 
