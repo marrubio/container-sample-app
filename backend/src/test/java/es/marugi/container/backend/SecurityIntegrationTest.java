@@ -30,8 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     "spring.datasource.username=sa",
     "spring.datasource.password=",
     "spring.jpa.hibernate.ddl-auto=create-drop",
-    "spring.jpa.database-platform=org.hibernate.dialect.H2Dialect",
-    "spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect",
     "spring.sql.init.mode=never",
     "spring.jpa.defer-datasource-initialization=false",
     "spring.security.oauth2.resourceserver.jwt.jwk-set-uri=http://localhost/jwks",

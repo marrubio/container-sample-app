@@ -1,6 +1,8 @@
 package es.marugi.container.backend;
 
-import es.marugi.container.backend.domain.model.Game;
+import es.marugi.container.backend.adapter.in.rest.dto.CreateGameRequestDTO;
+import es.marugi.container.backend.adapter.in.rest.dto.GameResponseDTO;
+import es.marugi.container.backend.adapter.in.rest.dto.UpdateGameRequestDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,54 +29,52 @@ class GameControllerIntegrationTest {
 
     @Test
     void createAndRetrieveGame() {
-        // Crear un nuevo juego
-        Game newGame = new Game();
-        newGame.setTitle("Integration Test Game");
-        newGame.setDescription("Game created by integration test");
-        newGame.setScore(7.8);
-        newGame.setDevelopmentYear(2026);
+        CreateGameRequestDTO newGame = new CreateGameRequestDTO(
+            "Integration Test Game",
+            "Game created by integration test",
+            2026,
+            8.0
+        );
 
-        // POST para crear el juego
-        Game createdGame = webTestClient.post()
+        GameResponseDTO createdGame = webTestClient.post()
             .uri("/api/games")
             .bodyValue(newGame)
             .exchange()
             .expectStatus().isCreated()
             .expectHeader().valueMatches("Location", ".*/api/games/\\d+$")
-            .expectBody(Game.class)
+            .expectBody(GameResponseDTO.class)
             .returnResult().getResponseBody();
 
         assertThat(createdGame).isNotNull();
-        assertThat(createdGame.getId()).isNotNull();
-        assertThat(createdGame.getRecordedAt()).isNotNull();
-        assertThat(createdGame.getTitle()).isEqualTo("Integration Test Game");
+        assertThat(createdGame.id()).isNotNull();
+        assertThat(createdGame.recordedAt()).isNotNull();
+        assertThat(createdGame.title()).isEqualTo("Integration Test Game");
 
-        Game retrievedGame = webTestClient.get()
-            .uri("/api/games/" + createdGame.getId())
+        GameResponseDTO retrievedGame = webTestClient.get()
+            .uri("/api/games/" + createdGame.id())
             .exchange()
             .expectStatus().isOk()
-            .expectBody(Game.class)
+            .expectBody(GameResponseDTO.class)
             .returnResult().getResponseBody();
 
         assertThat(retrievedGame).isNotNull();
-        assertThat(retrievedGame.getId()).isEqualTo(createdGame.getId());
-        assertThat(retrievedGame.getTitle()).isEqualTo("Integration Test Game");
+        assertThat(retrievedGame.id()).isEqualTo(createdGame.id());
+        assertThat(retrievedGame.title()).isEqualTo("Integration Test Game");
 
-        // GET para recuperar todos los juegos
-        Game[] games = webTestClient.get()
+        GameResponseDTO[] games = webTestClient.get()
             .uri("/api/games")
             .exchange()
             .expectStatus().isOk()
-            .expectBody(Game[].class)
+            .expectBody(GameResponseDTO[].class)
             .returnResult().getResponseBody();
 
         assertThat(games).isNotNull();
         boolean found = false;
-        for (Game g : games) {
-            if (g.getId().equals(createdGame.getId())) {
+        for (GameResponseDTO g : games) {
+            if (g.id().equals(createdGame.id())) {
                 found = true;
-                assertThat(g.getTitle()).isEqualTo("Integration Test Game");
-                assertThat(g.getRecordedAt()).isNotNull();
+                assertThat(g.title()).isEqualTo("Integration Test Game");
+                assertThat(g.recordedAt()).isNotNull();
             }
         }
         assertThat(found).isTrue();
@@ -82,47 +82,44 @@ class GameControllerIntegrationTest {
 
     @Test
     void updateGame() {
-        // Crear un nuevo juego
-        Game newGame = new Game();
-        newGame.setTitle("Update Test Game");
-        newGame.setDescription("Game to be updated");
-        newGame.setScore(5.0);
-        newGame.setDevelopmentYear(2020);
+        CreateGameRequestDTO newGame = new CreateGameRequestDTO(
+            "Update Test Game",
+            "Game to be updated",
+            2020,
+            5.0
+        );
 
-        // POST para crear el juego
-        Game createdGame = webTestClient.post()
+        GameResponseDTO createdGame = webTestClient.post()
             .uri("/api/games")
             .bodyValue(newGame)
             .exchange()
             .expectStatus().isCreated()
-            .expectBody(Game.class)
+            .expectBody(GameResponseDTO.class)
             .returnResult().getResponseBody();
 
         assertThat(createdGame).isNotNull();
-        Long id = createdGame.getId();
+        Long id = createdGame.id();
 
-        // Crear DTO de actualización
-        var updateRequest = new java.util.HashMap<String, Object>();
-        updateRequest.put("title", "Updated Game Title");
-        updateRequest.put("description", "Updated description");
-        updateRequest.put("developmentYear", 2022);
-        updateRequest.put("score", 9);
+        UpdateGameRequestDTO updateRequest = new UpdateGameRequestDTO(
+            "Updated Game Title",
+            "Updated description",
+            2022,
+            9.0
+        );
 
-        // PUT para actualizar el juego
-        Game updatedGame = webTestClient.put()
+        GameResponseDTO updatedGame = webTestClient.put()
             .uri("/api/games/" + id)
             .bodyValue(updateRequest)
             .exchange()
             .expectStatus().isOk()
-            .expectBody(Game.class)
+            .expectBody(GameResponseDTO.class)
             .returnResult().getResponseBody();
 
         assertThat(updatedGame).isNotNull();
-        assertThat(updatedGame.getTitle()).isEqualTo("Updated Game Title");
-        assertThat(updatedGame.getDescription()).isEqualTo("Updated description");
-        assertThat(updatedGame.getDevelopmentYear()).isEqualTo(2022);
-        assertThat(updatedGame.getScore()).isEqualTo(9);
-       // assertThat(updatedGame.getRecordedAt()).isEqualTo(createdGame.getRecordedAt()); // La fecha no debe cambiar
+        assertThat(updatedGame.title()).isEqualTo("Updated Game Title");
+        assertThat(updatedGame.description()).isEqualTo("Updated description");
+        assertThat(updatedGame.developmentYear()).isEqualTo(2022);
+        assertThat(updatedGame.score()).isEqualTo(9);
     }
 
     @Test

@@ -1,4 +1,4 @@
-package es.marugi.container.backend.infrastucture.config;
+package es.marugi.container.backend.infrastructure.config;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -82,3 +82,4 @@ public class SecurityConfig {
         return http.build();
     }
 }
+

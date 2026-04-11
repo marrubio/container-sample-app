@@ -26,8 +26,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/games")
-public class
-GameController {
+public class GameController {
     private final GameQueryService gameQueryService;
     private final GameCommandService gameCommandService;
     private final GameRestMapper gameMapper;
@@ -72,12 +71,12 @@ GameController {
 
     @PutMapping("/{id}")
     public ResponseEntity<GameResponseDTO> updateGame(@PathVariable Long id, @Valid @RequestBody UpdateGameRequestDTO updateRequest) {
-        GameDTO updated = gameCommandService.updateGame(id,gameMapper.toDto(updateRequest));
+        GameDTO updated = gameCommandService.updateGame(id, gameMapper.toDto(updateRequest));
         return ResponseEntity.ok(gameMapper.toResponseDTO(updated));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteGame(@Valid @PathVariable Long id) {
+    public ResponseEntity<Void> deleteGame(@PathVariable Long id) {
         gameCommandService.deleteGame(id);
         return ResponseEntity.noContent().build();
     }

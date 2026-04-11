@@ -23,7 +23,7 @@ src/main/java/com/example/backend/
 ├── domain/               # Domain Layer (Core Business Logic)
 │   ├── model/            # Entities and Value Objects
 │   └── repository/       # Repository Interfaces (Ports)
-└── infrastucture/        # Framework configuration & cross-cutting concerns
+└── infrastructure/       # Framework configuration & cross-cutting concerns
 ```
 
 ### 🧠 Key Concepts
